@@ -1,0 +1,95 @@
+version: '3'
+
+networks:
+    laravel:
+    
+services:
+    nginx:
+        image: nginx:alpine
+        container_name: nginx
+        tty: true
+        restart: unless-stopped
+        ports:
+            - "80:80"
+        volumes: 
+            - ./src:/var/www/html/:cached
+            - ./nginx/nginxconfig.io-localhost/nginx.conf:/etc/nginx/nginx.conf:cached
+            - ./nginx/nginxconfig.io-localhost/nginxconfig.io:/etc/nginx/nginxconfig.io:cached
+            - ./nginx/nginxconfig.io-localhost/default.conf:/etc/nginx/conf.d/default.conf:cached
+        depends_on:
+            - php
+            - mariadb
+        networks:
+            - laravel
+    
+    mariadb:
+        image: mariadb:latest
+        container_name: mariadb
+        restart: unless-stopped
+        tty: true
+        ports: 
+            - "3306:3306"
+        environment: 
+            MYSQL_DATABASE: homestead
+            MYSQL_USER: homestead
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: secret
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mariadb
+        networks:
+            - laravel
+    
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        # image: openbridge/ob_php-fpm
+        container_name: php
+        volumes: 
+            - ./src:/var/www/html:cached
+        ports: 
+            - "9000:9000"
+        networks:
+            - laravel
+    
+    composer:
+        image: composer:latest
+        container_name: composer
+        # command: ["composer", "install"]
+        volumes: 
+            - ./src:/var/www/html
+        working_dir: /var/www/html
+        depends_on: 
+            - php
+        networks: 
+            - laravel
+            
+    npm:
+        image: node:lts-alpine
+        container_name: npm
+        volumes:
+            - ./src:/var/www/html
+        working_dir: /var/www/html
+        entrypoint: ['npm']
+    
+    artisan:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: artisan
+        volumes:
+            - ./src:/var/www/html
+        depends_on:
+            - mariadb
+        working_dir: /var/www/html
+        entrypoint: ['php', '/var/www/html/artisan']
+        networks:
+            - laravel
+    
+    redis:
+        image: redis:alpine
+        restart: unless-stopped
+        ports:
+            - "6379:6379"
+        networks:
+            - laravel
