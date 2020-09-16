@@ -23,7 +23,7 @@
 
 ## Notes:
 
-- Csv file must contain column named "Time". Checkout [Plots](docs/sample/plotdata.csv).
+- Csv file must contain column named "Time". Checkout [Sample CSV](docs/sample/plotdata.csv).
 
 ## Screenshots:
 
