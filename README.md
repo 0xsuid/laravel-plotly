@@ -6,9 +6,9 @@
 - ```docker-compose up -d --build```
 - ```docker-compose run --rm composer install```
 - ```docker-compose run --rm npm install```
-- Now create .env file and replace DB_HOST & REDIS_HOST with ```DB_HOST=mariadb & REDIS_HOST=redis```
-OR 
-- Get file from https://file.io/mjjLf8H35oqX & save under src folder as .env file
+- Now create .env file and replace DB_HOST & REDIS_HOST with ```DB_HOST=mariadb & REDIS_HOST=redis```  
+ **OR** 
+- Just Rename /src/env.sample as .env file (If you just want to explore project)
 - ```docker-compose run --rm artisan migrate```
 
 ## Useage:
