@@ -1,4 +1,5 @@
 # Laravel + Vuejs Dockerized
+
 - This Project is built with **Docker**, **Laravel** & **Vuejs** (with **BootStrap**) to visualize csv by **Plotly** subplots with shared axes(x-axes here).
 
 ## Installation:
@@ -21,7 +22,8 @@
     - ```docker-compose run --rm npm run prod```
 
 ## Notes:
-- Csv file must contain column named "Time".
+
+- Csv file must contain column named "Time". Checkout [Plots](docs/sample/plotdata.csv).
 
 ## Screenshots:
 
